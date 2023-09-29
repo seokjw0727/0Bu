@@ -124,4 +124,4 @@ async def credit(interaction: discord.Interaction):
 
 
 
-bot.run('MTE1NzIzMTc5MDI1NjMwODMwNA.G0JEnM.91gA5iMYTQZIa-ZJU7sp9kW_iqFfK2-4rYmz7c')
+bot.run(os.getenv('TOKEN'))
