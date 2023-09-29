@@ -7,8 +7,10 @@ import os
 import discord
 import datetime
 import pytz
+import random
 from discord.ext import commands
 from discord import app_commands
+from dotenv import load_dotenv
 
 intents = discord.Intents.default()
 intents.members = True
@@ -17,6 +19,19 @@ intents.message_content = True
 bot = commands.Bot(command_prefix = "공부야 ", intents=discord.Intents.all()) 
 
 bot.remove_command('help') # 쓸모없는 기본 탑재 명령어 삭제
+
+@bot.event 
+async def on_message(message):
+    if message.author.bot:
+        return None
+    if message.content == '공부야':
+        replies = ['네?', '반갑습니다!', '저 살아있어요!', '열공']
+        reply = random.choice(replies)
+        await message.channel.send(reply)
+    elif message.content.startswith(bot.command_prefix):
+        await bot.process_commands(message)
+
+
 
 @bot.event # 'on_ready' - 봇을 켜는 이벤트
 async def on_ready():
@@ -118,10 +133,32 @@ async def credit(interaction: discord.Interaction):
     embed.add_field(name='개발자', value='`dev_maco`', inline=False)
     embed.add_field(name='개발 언어', value='`Python`', inline=False)
     embed.add_field(name='개발 라이브러리', value='`discord.py`', inline=False)
-    embed.add_field(name='소스 코드', value=''  )
+    embed.add_field(name='소스 코드', value='https://github.com/seokjw0727/0Bu'  )
     embed.set_footer(text='*All rights reserved. © 2023. 석지우*')
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 
+@bot.event # 'on_voice_state_update' 이벤트, 유저가 채널에 접속하면 알림.
+async def on_voice_state_update(member, before, after):
+    # 채널
+    chat_channel = bot.get_channel(1157241419518459974) # 0Bu_log 채널
+    voice_plaza = bot.get_channel(1157309186548432917) # 광장 채널
+    voice_study = bot.get_channel(1157309089622282260) # 공부 채널
+
+    if before.channel is None and after.channel is not None:
+        if after.channel is voice_plaza: 
+            await chat_channel.send(f"{member.mention} 이(가) __⛲광장__ 채널에 접속했습니다.")
+        elif after.channel is voice_study:
+            await chat_channel.send(f"{member.mention} 이(가) __📚공부__ 채널에 접속했습니다.")
+
+
+
+
+
+
+
+
+load_dotenv()
+load_dotenv('.env')
 bot.run(os.getenv('TOKEN'))
