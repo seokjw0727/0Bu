@@ -55,7 +55,7 @@ async def on_ready():
 
 @bot.tree.command(name="상태", description="네트워크 상태를 확인합니다.") # '상태' - 봇의 네트워크 상태를 embed로 대답하는 명령어입니다.
 async def network_status(interaction: discord.Interaction):
-    if bot.latency * 1000 >= 80:
+    if bot.latency * 1000 >= 100:
         not_good = discord.Embed(title= "**🔴 이상 🔴**", description= f"현재 네트워크 지연시간은 **{round(round(bot.latency, 4)*1000)}ms** 이므로, 석지우에게 관리를 요청하세요.", timestamp=datetime.datetime.now(pytz.timezone('UTC')), color=0xff0000)
         await interaction.response.send_message(embed=not_good)
     else:
@@ -151,11 +151,6 @@ async def on_voice_state_update(member, before, after):
             await chat_channel.send(f"{member.mention} 이(가) __⛲광장__ 채널에 접속했습니다.")
         elif after.channel is voice_study:
             await chat_channel.send(f"{member.mention} 이(가) __📚공부__ 채널에 접속했습니다.")
-
-
-
-
-
 
 
 
