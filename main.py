@@ -191,9 +191,14 @@ async def on_voice_state_update(member, before, after):
       await chat_channel.send(f"{member.mention} 이(가) __⛲광장__ 채널에 접속했습니다.")
     elif after.channel is voice_study:
       await chat_channel.send(f"{member.mention} 이(가) __📚공부__ 채널에 접속했습니다.")
+  if before.channel is not None and after.channel is None:
+    if before.channel is voice_plaza:
+      await chat_channel.send(f"{member.mention} 이(가) __⛲광장__ 채널에서 나갔습니다.")
+    elif before.channel is voice_study:
+      await chat_channel.send(f"{member.mention} 이(가) __📚공부__ 채널에서 나갔습니다.")
 
 
 load_dotenv()
-load_dotenv('key.json')
+load_dotenv('secret.json')
 keep_alive()
 bot.run(os.getenv('TOKEN'))
